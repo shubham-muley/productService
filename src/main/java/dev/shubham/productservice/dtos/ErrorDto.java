@@ -1,2 +1,10 @@
-package dev.shubham.productservice.dtos;public class ErrorDto {
+package dev.shubham.productservice.dtos;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ErrorDto {
+    private String message;
 }
