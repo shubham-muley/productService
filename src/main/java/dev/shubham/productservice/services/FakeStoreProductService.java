@@ -9,9 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("FakeStoreProductService")
 public class FakeStoreProductService implements ProductService {
 
     private final RestTemplate restTemplate;
@@ -20,42 +21,31 @@ public class FakeStoreProductService implements ProductService {
     }
     
     @Override
-    public ResponseEntity<Product> getSingleProductDetails(Long id) {
+    public Product getSingleProductDetails(Long id) {
 
         FakeStoreProductDto response = restTemplate.getForObject(
                 "https://fakestoreapi.com/products/" + id,
                 FakeStoreProductDto.class);
 
-//        assert response != null;
-        return new ResponseEntity<>(response.toProduct(), HttpStatusCode.valueOf(HttpStatus.OK.value()));
+        return response.toProduct();
     }
 
     @Override
-    public ResponseEntity<Product[]> getAllProducts() {
+    public List<Product> getAllProducts() {
         FakeStoreProductDto[] response = restTemplate.getForObject(
                 "https://fakestoreapi.com/products/",
                 FakeStoreProductDto[].class
         );
 
-        Product[] products = new Product[response.length];
-        int i=0;
+        List<Product> products = new ArrayList<>();
         for(FakeStoreProductDto product : response){
-            products[i++] = product.toProduct();
+            products.add(product.toProduct());
         }
-
-        //Sending ResponseEntity for returning status code and body
-//        ResponseEntity<Product[]> responseEntity = new ResponseEntity<>(
-//                products,
-//                HttpStatus.OK
-//        );
-        return new ResponseEntity<>(
-                products,
-                HttpStatus.OK
-        );
+        return products;
     }
 
     @Override
-    public ResponseEntity<Product> createProduct(CreateProductDto createProductDto){
+    public Product createProduct(CreateProductDto createProductDto){
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
         fakeStoreProductDto.setTitle(createProductDto.getTitle());
         fakeStoreProductDto.setDescription(createProductDto.getDescription());
@@ -69,6 +59,6 @@ public class FakeStoreProductService implements ProductService {
         );
 
 //        assert response != null;
-        return new ResponseEntity<>(response.toProduct(), HttpStatus.CREATED);
+        return response.toProduct();
     }
 }

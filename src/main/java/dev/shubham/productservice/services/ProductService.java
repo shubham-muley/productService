@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ProductService {
-    public ResponseEntity<Product> getSingleProductDetails(Long id);
-    public ResponseEntity<Product[]> getAllProducts();
-    public ResponseEntity<Product> createProduct(CreateProductDto createProductDto);
+    public Product getSingleProductDetails(Long id);
+    public List<Product> getAllProducts();
+    public Product createProduct(CreateProductDto createProductDto);
 }

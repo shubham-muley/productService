@@ -1,5 +1,7 @@
 package dev.shubham.productservice.models;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -12,7 +14,8 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseModel {
     @Id
-    private String id;
+    @GeneratedValue
+    private Long id;
     private Date createdAt;
     private Date updatedAt;
     private boolean isDeleted;
