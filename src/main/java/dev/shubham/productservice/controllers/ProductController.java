@@ -3,8 +3,9 @@ package dev.shubham.productservice.controllers;
 import dev.shubham.productservice.dtos.CreateProductDto;
 import dev.shubham.productservice.dtos.ErrorDto;
 import dev.shubham.productservice.models.Product;
-import dev.shubham.productservice.services.FakeStoreProductService;
 import dev.shubham.productservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +15,35 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    private final FakeStoreProductService fakeStoreProductService;
     ProductService productService;
 
-    public ProductController(ProductService productService, FakeStoreProductService fakeStoreProductService) {
+    public ProductController(@Qualifier("DbProductService") ProductService productService) {
         this.productService = productService;
-        this.fakeStoreProductService = fakeStoreProductService;
     }
 
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductDetails(@PathVariable("id") Long id){
-        return productService.getSingleProductDetails(id);
+        return new ResponseEntity<>(productService.getSingleProductDetails(id), HttpStatus.OK);
     }
 
     @PostMapping("/products")
     public ResponseEntity<Product> createProductDetails(@RequestBody CreateProductDto createProductDto){
-        return productService.createProduct(createProductDto);
+        return new ResponseEntity<>(productService.createProduct(createProductDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/products")
-    public ResponseEntity<Product[]> getAllProducts(){
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts(){
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{categoryTitle}/{productTitle}")
+    public ResponseEntity<Product> getProductByTitleAndCategory(@PathVariable String categoryTitle, @PathVariable String productTitle){
+        return new ResponseEntity<>(productService.getProductByTitleAndCategory(productTitle, categoryTitle), HttpStatus.OK);
+    }
+
+    @GetMapping("/products/title/{productTitle}")
+    public ResponseEntity<Product> getProductByTitle(@PathVariable String productTitle){
+        return new ResponseEntity<>(productService.getProductByTitle(productTitle), HttpStatus.OK);
     }
 
     @ExceptionHandler(NullPointerException.class)
