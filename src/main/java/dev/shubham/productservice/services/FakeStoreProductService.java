@@ -61,4 +61,14 @@ public class FakeStoreProductService implements ProductService {
 //        assert response != null;
         return response.toProduct();
     }
+
+    @Override
+    public Product getProductByTitleAndCategory(String title, String categoryTitle) {
+        return null;
+    }
+
+    @Override
+    public Product getProductByTitle(String title) {
+        return null;
+    }
 }

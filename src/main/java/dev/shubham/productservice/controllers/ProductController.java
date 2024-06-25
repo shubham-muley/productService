@@ -36,6 +36,16 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
+    @GetMapping("/{categoryTitle}/{productTitle}")
+    public ResponseEntity<Product> getProductByTitleAndCategory(@PathVariable String categoryTitle, @PathVariable String productTitle){
+        return new ResponseEntity<>(productService.getProductByTitleAndCategory(productTitle, categoryTitle), HttpStatus.OK);
+    }
+
+    @GetMapping("/products/title/{productTitle}")
+    public ResponseEntity<Product> getProductByTitle(@PathVariable String productTitle){
+        return new ResponseEntity<>(productService.getProductByTitle(productTitle), HttpStatus.OK);
+    }
+
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorDto> nullPointerExceptionHandler(){
         ErrorDto errorDto = new ErrorDto();

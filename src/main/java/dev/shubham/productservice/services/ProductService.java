@@ -10,4 +10,6 @@ public interface ProductService {
     public Product getSingleProductDetails(Long id);
     public List<Product> getAllProducts();
     public Product createProduct(CreateProductDto createProductDto);
+    public Product getProductByTitleAndCategory(String title, String categoryTitle);
+    public Product getProductByTitle(String title);
 }

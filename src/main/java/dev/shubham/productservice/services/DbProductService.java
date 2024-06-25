@@ -50,4 +50,15 @@ public class DbProductService implements ProductService{
 
         return productRepository.save(product);
     }
+
+    @Override
+    public Product getProductByTitleAndCategory(String title, String categoryTitle) {
+        return productRepository.findByTitleAndCategory(title, categoryTitle);
+    }
+
+    @Override
+    public Product getProductByTitle(String title) {
+        return productRepository.findByTitle(title);
+    }
+
 }
