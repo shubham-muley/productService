@@ -1,11 +1,8 @@
 package dev.shubham.productservice.services;
 
-import dev.shubham.productservice.dtos.CreateProductDto;
+import dev.shubham.productservice.dtos.CreateProductRequestDto;
 import dev.shubham.productservice.dtos.FakeStoreProductDto;
 import dev.shubham.productservice.models.Product;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -45,13 +42,13 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product createProduct(CreateProductDto createProductDto){
+    public Product createProduct(CreateProductRequestDto createProductRequestDto){
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
-        fakeStoreProductDto.setTitle(createProductDto.getTitle());
-        fakeStoreProductDto.setDescription(createProductDto.getDescription());
-        fakeStoreProductDto.setPrice(createProductDto.getPrice());
-        fakeStoreProductDto.setImage(createProductDto.getImage());
-        fakeStoreProductDto.setCategory(createProductDto.getCategory());
+        fakeStoreProductDto.setTitle(createProductRequestDto.getTitle());
+        fakeStoreProductDto.setDescription(createProductRequestDto.getDescription());
+        fakeStoreProductDto.setPrice(createProductRequestDto.getPrice());
+        fakeStoreProductDto.setImage(createProductRequestDto.getImage());
+        fakeStoreProductDto.setCategory(createProductRequestDto.getCategory());
         FakeStoreProductDto response = restTemplate.postForObject(
                 "https://fakestoreapi.com/products/",
                 fakeStoreProductDto,
@@ -70,5 +67,10 @@ public class FakeStoreProductService implements ProductService {
     @Override
     public Product getProductByTitle(String title) {
         return null;
+    }
+
+    @Override
+    public void deleteProductById(Long id) {
+
     }
 }
