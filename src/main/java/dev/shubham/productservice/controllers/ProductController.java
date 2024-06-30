@@ -1,12 +1,10 @@
 package dev.shubham.productservice.controllers;
 
-import dev.shubham.productservice.dtos.CreateProductDto;
-import dev.shubham.productservice.dtos.ErrorDto;
+import dev.shubham.productservice.dtos.CreateProductRequestDto;
 import dev.shubham.productservice.models.Product;
 import dev.shubham.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +25,8 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<Product> createProductDetails(@RequestBody CreateProductDto createProductDto){
-        return new ResponseEntity<>(productService.createProduct(createProductDto), HttpStatus.CREATED);
+    public ResponseEntity<Product> createProductDetails(@RequestBody CreateProductRequestDto createProductRequestDto){
+        return new ResponseEntity<>(productService.createProduct(createProductRequestDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/products")
@@ -46,10 +44,9 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductByTitle(productTitle), HttpStatus.OK);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ErrorDto> nullPointerExceptionHandler(){
-        ErrorDto errorDto = new ErrorDto();
-        errorDto.setMessage("Some issue occured, Null Pointer Exception");
-        return new ResponseEntity<>(errorDto, HttpStatusCode.valueOf(404));
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<Product> deleteProduct(@PathVariable Long id){
+        productService.deleteProductById(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

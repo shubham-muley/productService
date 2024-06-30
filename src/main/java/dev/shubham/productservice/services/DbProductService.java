@@ -1,14 +1,14 @@
 package dev.shubham.productservice.services;
 
-import dev.shubham.productservice.dtos.CreateProductDto;
+import dev.shubham.productservice.dtos.CreateProductRequestDto;
 import dev.shubham.productservice.models.Category;
 import dev.shubham.productservice.models.Product;
 import dev.shubham.productservice.repositories.CategoryRepository;
 import dev.shubham.productservice.repositories.ProductRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("DbProductService")
 public class DbProductService implements ProductService{
@@ -32,19 +32,19 @@ public class DbProductService implements ProductService{
     }
 
     @Override
-    public Product createProduct(CreateProductDto createProductDto) {
+    public Product createProduct(CreateProductRequestDto createProductRequestDto) {
         Product product = new Product();
-        product.setTitle(createProductDto.getTitle());
-        product.setDescription(createProductDto.getDescription());
-        product.setPrice(createProductDto.getPrice());
-        product.setImage(createProductDto.getImage());
+        product.setTitle(createProductRequestDto.getTitle());
+        product.setDescription(createProductRequestDto.getDescription());
+        product.setPrice(createProductRequestDto.getPrice());
+        product.setImage(createProductRequestDto.getImage());
 
-        Category category = categoryRepository.findByTitle(createProductDto.getCategory());
-        if (category != null) {
-            product.setCategory(category);
+        Optional<Category> category = categoryRepository.findByTitle(createProductRequestDto.getCategory());
+        if (category.isPresent()) {
+            product.setCategory(category.get());
         }else{
             Category newCategory = new Category();
-            newCategory.setTitle(createProductDto.getCategory());
+            newCategory.setTitle(createProductRequestDto.getCategory());
             product.setCategory(newCategory);
         }
 
@@ -59,6 +59,10 @@ public class DbProductService implements ProductService{
     @Override
     public Product getProductByTitle(String title) {
         return productRepository.findByTitle(title);
+    }
+    @Override
+    public void deleteProductById(Long id) {
+        productRepository.deleteById(id);
     }
 
 }
