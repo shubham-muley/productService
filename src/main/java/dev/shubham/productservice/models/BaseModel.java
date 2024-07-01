@@ -22,7 +22,6 @@ public class BaseModel {
     @CreationTimestamp
     private Date createdAt;
 
-    @UpdateTimestamp
     private Date updatedAt;
 
     private boolean isDeleted;
