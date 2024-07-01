@@ -14,4 +14,11 @@ public class ControllerAdvice {
         errorDto.setMessage("Some issue occured, Null Pointer Exception");
         return new ResponseEntity<>(errorDto, HttpStatusCode.valueOf(404));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDto> globalExceptionHandler(){
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage("Some issue occured, throwed an Exception");
+        return new ResponseEntity<>(errorDto, HttpStatusCode.valueOf(404));
+    }
 }
