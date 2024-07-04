@@ -1,6 +1,8 @@
 package dev.shubham.productservice.advice;
 
 import dev.shubham.productservice.dtos.ErrorDto;
+import dev.shubham.productservice.exceptions.NoProductsException;
+import dev.shubham.productservice.exceptions.ProductNotFoundException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,10 +17,17 @@ public class ControllerAdvice {
         return new ResponseEntity<>(errorDto, HttpStatusCode.valueOf(404));
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDto> globalExceptionHandler(){
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorDto> productNotFoundExceptionHandler(){
         ErrorDto errorDto = new ErrorDto();
-        errorDto.setMessage("Some issue occured, throwed an Exception");
+        errorDto.setMessage("No Product found");
+        return new ResponseEntity<>(errorDto, HttpStatusCode.valueOf(404));
+    }
+
+    @ExceptionHandler(NoProductsException.class)
+    public ResponseEntity<ErrorDto> noProductsExceptionHandler(){
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage("No Products found in the Database");
         return new ResponseEntity<>(errorDto, HttpStatusCode.valueOf(404));
     }
 }
