@@ -16,7 +16,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     void delete(Category category);
 
     @Modifying
-    @Query("UPDATE Category c SET c.title = :#{#category.title}, c.updatedAt = :#{#category.updatedAt} WHERE c.id = :#{#category.id}")
+    @Query("UPDATE category c SET c.title = :#{#category.title}, c.updatedAt = :#{#category.updatedAt} WHERE c.id = :#{#category.id}")
     int updateCategory(@Param("category") Category category);
 
     Optional<Category> findById(Long Id);
