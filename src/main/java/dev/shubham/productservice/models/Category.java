@@ -16,7 +16,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "category")
 @SQLDelete(sql = "UPDATE category SET is_deleted = true where id=?")
 @Where(clause = "is_deleted=false")
 public class Category extends BaseModel{

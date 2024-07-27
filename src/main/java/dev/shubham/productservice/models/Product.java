@@ -4,10 +4,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -15,7 +12,8 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Builder
+@Entity(name = "product")
 @SQLDelete(sql = "UPDATE product SET is_deleted = true where id=?")
 @Where(clause = "is_deleted=false")
 public class Product extends BaseModel{

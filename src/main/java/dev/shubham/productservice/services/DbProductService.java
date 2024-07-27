@@ -1,6 +1,6 @@
 package dev.shubham.productservice.services;
 
-import dev.shubham.productservice.dtos.CreateProductRequestDto;
+import dev.shubham.productservice.dtos.CreateProductResponseDto;
 import dev.shubham.productservice.exceptions.NoProductsException;
 import dev.shubham.productservice.exceptions.ProductNotFoundException;
 import dev.shubham.productservice.models.Category;
@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+//TODO: After adding updateProduct code
+//      replace RequestDTOs with simple attributes to make it more generic
+//      so that any other service can also use it without any issue.
 
 @Service("DbProductService")
 public class DbProductService implements ProductService{
@@ -43,24 +47,37 @@ public class DbProductService implements ProductService{
     }
 
     @Override
-    public Product createProduct(CreateProductRequestDto createProductRequestDto) {
-        Product product = new Product();
-        product.setTitle(createProductRequestDto.getTitle());
-        product.setDescription(createProductRequestDto.getDescription());
-        product.setPrice(createProductRequestDto.getPrice());
-        product.setImage(createProductRequestDto.getImage());
-        product.setUpdatedAt(new Date());
+    public CreateProductResponseDto createProduct(String title, double price,
+                                                  String categoryTitle, String description,
+                                                  String image) {
+        Product product = Product
+                .builder()
+                .title(title)
+                .price(price)
+                .description(description)
+                .image(image)
+                .build();
 
-        Optional<Category> category = categoryRepository.findByTitle(createProductRequestDto.getCategory());
+        Optional<Category> category = categoryRepository.findByTitle(categoryTitle);
         if (category.isPresent()) {
             product.setCategory(category.get());
         }else{
             Category newCategory = new Category();
-            newCategory.setTitle(createProductRequestDto.getCategory());
+            newCategory.setTitle(categoryTitle);
             product.setCategory(newCategory);
         }
 
-        return productRepository.save(product);
+        product = productRepository.save(product);
+
+        return CreateProductResponseDto
+                .builder()
+                .id(product.getId())
+                .image(product.getImage())
+                .title(product.getTitle())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .category(product.getCategory())
+                .build();
     }
 
     @Override
