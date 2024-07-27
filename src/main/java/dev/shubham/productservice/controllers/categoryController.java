@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/category")
 public class categoryController {
 
     CategoryService categoryService;
@@ -18,28 +19,31 @@ public class categoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/category/{id}")
+
+    // TODO: handle exceptions on each controller
+
+    @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         return new ResponseEntity<>(categoryService.findCategoryById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/category")
+    @GetMapping()
     public ResponseEntity<List<Category>> getAllCategories() {
         return new ResponseEntity<>(categoryService.findAllCategories(), HttpStatus.OK);
     }
 
-    @GetMapping("/category/title/{categoryTitle}")
+    @GetMapping("/title/{categoryTitle}")
     public ResponseEntity<Category> getCategoryByTitle(@PathVariable String categoryTitle) {
         return new ResponseEntity<>(categoryService.findCategoryByTitle(categoryTitle), HttpStatus.OK);
     }
 
-    @PutMapping("/category")
+    @PutMapping()
     public ResponseEntity<Void> updateCategoryTitle(@RequestBody UpdateCategoryRequestDto updateCategoryRequestDto) {
         categoryService.updateCategory(updateCategoryRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/category/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id){
         categoryService.deleteCategoryById(id);
         return new ResponseEntity<>(HttpStatus.OK);

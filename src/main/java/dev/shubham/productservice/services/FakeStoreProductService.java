@@ -1,6 +1,7 @@
 package dev.shubham.productservice.services;
 
 import dev.shubham.productservice.dtos.CreateProductRequestDto;
+import dev.shubham.productservice.dtos.CreateProductResponseDto;
 import dev.shubham.productservice.dtos.FakeStoreProductDto;
 import dev.shubham.productservice.models.Product;
 import org.springframework.stereotype.Service;
@@ -42,13 +43,15 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product createProduct(CreateProductRequestDto createProductRequestDto){
+    public CreateProductResponseDto createProduct(String title, double price,
+                                                  String categoryTitle, String description,
+                                                  String image){
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
-        fakeStoreProductDto.setTitle(createProductRequestDto.getTitle());
-        fakeStoreProductDto.setDescription(createProductRequestDto.getDescription());
-        fakeStoreProductDto.setPrice(createProductRequestDto.getPrice());
-        fakeStoreProductDto.setImage(createProductRequestDto.getImage());
-        fakeStoreProductDto.setCategory(createProductRequestDto.getCategory());
+        fakeStoreProductDto.setTitle(title);
+        fakeStoreProductDto.setDescription(description);
+        fakeStoreProductDto.setPrice(price);
+        fakeStoreProductDto.setImage(image);
+        fakeStoreProductDto.setCategory(categoryTitle);
         FakeStoreProductDto response = restTemplate.postForObject(
                 "https://fakestoreapi.com/products/",
                 fakeStoreProductDto,
@@ -56,7 +59,8 @@ public class FakeStoreProductService implements ProductService {
         );
 
 //        assert response != null;
-        return response.toProduct();
+
+        return null;
     }
 
     @Override

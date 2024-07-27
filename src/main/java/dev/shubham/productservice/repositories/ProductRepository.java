@@ -12,9 +12,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByIdIs(long id);
     Product save(Product product);
+
     List<Product> findAll();
     Optional<Product> findByTitle(String title);
-    @Query("select p from Product p where (p.title = :title and p.category.title = :categoryTitle)")
+    @Query("select p from product p where (p.title = :title and p.category.title = :categoryTitle)")
     Optional<Product> findByTitleAndCategory(@Param("title") String title,@Param("categoryTitle") String categoryTitle);
     @Query(value = "select * from product where product.category_id = :categoryId", nativeQuery = true)
 //    @Query("select p from Product p where p.category.id = :categoryId")
